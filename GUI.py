@@ -12,7 +12,8 @@ class Messager:
     def reciever(self, conn):
         while True:
             message = conn.recv(1024).decode('utf-8')
-            field_insert(text_field2, "Recieved Message")
+            addr = conn.recv(1024).decode('utf-8')
+            field_insert(text_field2, "Recieved Message from " + addr)
             field_insert(text_field1, message)
 
     def start(self):

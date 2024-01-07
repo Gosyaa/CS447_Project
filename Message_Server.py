@@ -10,6 +10,7 @@ def client_handler(conn, addr):
             print("\nMessage recieved from", addr)
             for client_address in clients.keys():
                 clients[client_address].send(message)
+                clients[client_address].send(str(addr).encode('utf-8'))
                 print("\nMessage send to", client_address)
         except Exception as e:
             print("Client", addr, "disconected")
@@ -33,6 +34,7 @@ while True:
 
     message = "Hello from the server!"
     conn.send(message.encode('utf-8'))
+    conn.send("Server".encode('utf-8'))
     clients[addr] = conn
     client_handler_thread = threading.Thread(target=client_handler, args=(conn, addr))
     client_handler_thread.start() 
