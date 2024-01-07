@@ -36,5 +36,5 @@ while True:
     conn.send(message.encode('utf-8'))
     conn.send("Server".encode('utf-8'))
     clients[addr] = conn
-    client_handler_thread = threading.Thread(target=client_handler, args=(conn, addr))
+    client_handler_thread = threading.Thread(target=client_handler, args=(conn, addr), daemon=True)
     client_handler_thread.start() 
