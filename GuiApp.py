@@ -54,11 +54,12 @@ class GuiApp:
 
         self.entry = tk.Entry(self.canvas3)
         self.button = tk.Button(self.canvas3, text="Submit", command=self.__on_button_click)
+        self.root.bind('<Return>', self.__on_button_click)
 
         self.entry.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.button.pack(side=tk.RIGHT, fill=tk.BOTH)
 
-    def __on_button_click(self) -> None:
+    def __on_button_click(self, event=None) -> None:
         s = self.entry.get()
         if s != "":
             s = self.username + ": " + s

@@ -21,7 +21,7 @@ class Server:
 
             message = "Hello from the server!"
             conn.send(message.encode('utf-8'))
-            conn.send("Server".encode('utf-8'))
+            conn.send("Server\n".encode('utf-8'))
             self.clients[addr] = conn
 
             client_handler_thread = threading.Thread(target=self.__handle_client, args=(conn, addr), daemon=True)
@@ -38,7 +38,8 @@ class Server:
 
                 for client_address, client_conn in self.clients.items():
                     client_conn.send(message)
-                    client_conn.send(str(addr).encode('utf-8'))
+                    tmp = str(addr) + '\n'
+                    client_conn.send(tmp.encode('utf-8'))
                     print("\nMessage sent to", client_address)
 
             except (Exception,):
