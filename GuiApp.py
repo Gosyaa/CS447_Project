@@ -3,17 +3,19 @@ import threading
 
 
 class GuiApp:
-    def __init__(self, root: tk.Tk) -> None:
+    def __init__(self, root: tk.Tk, username: str) -> None:
         self.root = root
         self.root.title("GUI App")
+        self.root.geometry("1280x720")
         self.new_messenger = None
         self.receiver_thread = None
+        self.username = username
 
         self.__setup_gui()
 
     def start(self) -> None:
         from Messenger import Messenger
-        self.new_messenger = Messenger('13.51.167.39', 12345, self)
+        self.new_messenger = Messenger('13.51.167.39', 12345, self, self.username)
         self.new_messenger.start()
 
         self.receiver_thread = threading.Thread(
@@ -59,6 +61,7 @@ class GuiApp:
     def __on_button_click(self) -> None:
         s = self.entry.get()
         if s != "":
+            s = self.username + ": " + s
             self.new_messenger.send_message(s)
             self.entry.delete(0, tk.END)
 

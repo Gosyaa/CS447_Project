@@ -2,11 +2,12 @@ import socket
 
 
 class Messenger:
-    def __init__(self, ip: str, port: int, app) -> None:
+    def __init__(self, ip: str, port: int, app, username: str) -> None:
         self.server_ip = ip
         self.server_port = port
         self.client_socket = None
         self.app = app
+        self.username = username
 
     def receive_message(self, conn) -> None:
         while True:
