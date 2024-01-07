@@ -3,9 +3,10 @@ import threading
 
 clients = {}
 
+
 def client_handler(conn, addr):
     while True:
-        try: 
+        try:
             message = conn.recv(1024)
             print("\nMessage recieved from", addr)
             for client_address in clients.keys():
@@ -16,7 +17,6 @@ def client_handler(conn, addr):
             print("Client", addr, "disconected")
             del clients[client_address]
             break
-            
 
 
 server_ip = '0.0.0.0'
@@ -37,4 +37,4 @@ while True:
     conn.send("Server".encode('utf-8'))
     clients[addr] = conn
     client_handler_thread = threading.Thread(target=client_handler, args=(conn, addr))
-    client_handler_thread.start() 
+    client_handler_thread.start()
