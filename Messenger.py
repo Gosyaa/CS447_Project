@@ -1,4 +1,5 @@
 import socket
+from RSA import RSA
 
 
 class Messenger:
@@ -8,10 +9,12 @@ class Messenger:
         self.client_socket = None
         self.app = app
         self.username = username
+        self.encryptor = RSA()
 
     def receive_message(self, conn) -> None:
         while True:
             message = conn.recv(1024).decode('utf-8')
+            message = self.encryptor.decrypt(message)
             addr = conn.recv(1024).decode('utf-8')
             self.app.field_insert(self.app.text_field2, "Received Message from " + addr)
             self.app.field_insert(self.app.text_field1, message)
@@ -24,5 +27,6 @@ class Messenger:
             "Connected to Server " + str(self.server_ip) + " on port " + str(self.server_port))
 
     def send_message(self, message: str) -> None:
-        self.client_socket.send(message.encode('utf-8'))
+        tmp = self.encryptor.encrypt(message)
+        self.client_socket.send(tmp.encode('utf-8'))
         self.app.field_insert(self.app.text_field2, "Message Sent Successfully")
