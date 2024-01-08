@@ -16,11 +16,16 @@ class Messenger:
             message = conn.recv(1024).decode('utf-8')
             try:
                 message = self.encryptor.decrypt(message)
+                field = self.app.text_field1
             except (Exception, ):
-                message = message
+                if 'line' in message:
+                    field = self.app.text_field1
+                else:
+                 field = self.app.text_field2
             addr = conn.recv(1024).decode('utf-8')
-            self.app.field_insert(self.app.text_field2, "Received Message from " + addr)
-            self.app.field_insert(self.app.text_field1, message)
+            if addr != "Server":
+                self.app.field_insert(self.app.text_field2, "Received Message from " + addr)
+            self.app.field_insert(field, message)
 
     def start(self) -> None:
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -28,6 +33,7 @@ class Messenger:
         self.app.field_insert(
             self.app.text_field2,
             "Connected to Server " + str(self.server_ip) + " on port " + str(self.server_port))
+        self.client_socket.send(self.username.encode('utf-8'))
 
     def send_message(self, message: str) -> None:
         tmp = self.encryptor.encrypt(message)
