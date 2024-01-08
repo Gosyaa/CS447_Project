@@ -19,9 +19,9 @@ class Server:
             conn, addr = self.server_socket.accept()
             print(f"Connection from {addr}")
 
-#            message = "Hello from the server!"
-#            conn.send(message.encode('utf-8'))
-#            conn.send("Server\n".encode('utf-8'))
+            message = "Hello from the server!"
+            conn.send(message.encode('utf-8'))
+            conn.send("Server\n".encode('utf-8'))
             self.clients[addr] = conn
 
             client_handler_thread = threading.Thread(target=self.__handle_client, args=(conn, addr), daemon=True)

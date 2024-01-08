@@ -14,7 +14,10 @@ class Messenger:
     def receive_message(self, conn) -> None:
         while True:
             message = conn.recv(1024).decode('utf-8')
-            message = self.encryptor.decrypt(message)
+            try:
+                message = self.encryptor.decrypt(message)
+            except (Exception, ):
+                message = message
             addr = conn.recv(1024).decode('utf-8')
             self.app.field_insert(self.app.text_field2, "Received Message from " + addr)
             self.app.field_insert(self.app.text_field1, message)
