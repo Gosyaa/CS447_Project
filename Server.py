@@ -30,8 +30,11 @@ class Server:
             self.clients_names[addr] = username
             message = username + " is online!"
             sleep(0.5)
-            conn.send(message.encode('utf-8'))
-            conn.send("Server".encode('utf-8'))
+            for client_address, client_conn in self.clients.items():
+                    client_conn.send(message.encode('utf-8'))
+                    tmp = str("Server")
+                    client_conn.send(tmp.encode('utf-8'))
+                    print("\nMessage sent to", client_address)
             client_handler_thread = threading.Thread(target=self.__handle_client, args=(conn, addr), daemon=True)
             client_handler_thread.start()
 
@@ -54,7 +57,7 @@ class Server:
                 print("Client", addr, "disconnected")
                 del self.clients[addr]
                 for client_address, client_conn in self.clients.items():
-                    tmp = self.clients_names[addr] + "is offline"
+                    tmp = self.clients_names[addr] + " is offline"
                     client_conn.send(tmp.encode('utf-8'))
                     tmp = "Server"
                     client_conn.send(tmp.encode('utf-8'))
